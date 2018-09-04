@@ -1,5 +1,6 @@
 package com.castor.controller;
 
+import com.castor.annotations.LocalLock;
 import com.castor.database.entities.Demo;
 import com.castor.database.repositories.DemoRepository;
 import com.castor.dtos.DemoLombok;
@@ -9,6 +10,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
@@ -36,6 +38,12 @@ public class DemoController {
 		redisCacheTemplate.opsForValue().set("castor", new DemoLombok( "abc", 20));
 		demos.stream().forEach(System.out::println);
 		return new DemoLombok("castor", 12);
+	}
+
+	@LocalLock(key = "book:arg[0]")
+	@GetMapping
+	public String query(@RequestParam String token) {
+		return "success - " + token;
 	}
 
 }

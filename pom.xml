@@ -95,6 +95,17 @@
 			<artifactId>commons-pool2</artifactId>
 		</dependency>
 		<!-- luttce end -->
+		<!-- aop @LocalLock-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>21.0</version>
+		</dependency>
+		<!-- aop @LocalLock end-->
 	</dependencies>
 	<build>
 		<plugins>
