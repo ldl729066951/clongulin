@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -38,6 +39,21 @@ public class DemoController {
 		redisCacheTemplate.opsForValue().set("castor", new DemoLombok( "abc", 20));
 		demos.stream().forEach(System.out::println);
 		return new DemoLombok("castor", 12);
+	}
+
+	@GetMapping("/get")
+	public Object demoGet(){
+		Optional<Demo> userOpt = demoRepository.findById(1L);
+		if(!userOpt.isPresent()){
+			Demo user = userOpt.get();
+			redisCacheTemplate.opsForValue().set("demo::"+user.getName(), user);
+		}else{
+			Demo u = new Demo();
+			u.setName("telly");
+			u.setAge(19);
+			demoRepository.saveAndFlush(u);
+		}
+		return "ok";
 	}
 
 	@LocalLock(key = "book:arg[0]")
